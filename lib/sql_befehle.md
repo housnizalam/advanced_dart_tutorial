@@ -563,8 +563,9 @@ Dieser SQL-Befehl gibt die niedrigste Note der Teilnehmer in der Teilnehmer-Tabe
 | 20             |
 
 ```sql
-SELECT FIRST(t.Note) AS ErsteNote, LAST(t.Note) AS LetzteNote
-FROM Teilnehmer AS t;
+SELECT 
+    (SELECT Note FROM Teilnehmer ORDER BY TeilnehmerID ASC LIMIT 1) AS ErsteNote,
+    (SELECT Note FROM Teilnehmer ORDER BY TeilnehmerID DESC LIMIT 1) AS LetzteNote;
 ```
 
 Dieser SQL-Befehl gibt die **erste** und die **letzte** Note aus der Teilnehmer-Tabelle zurück.
