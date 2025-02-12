@@ -1,16 +1,23 @@
 
 void main() {
+  // ruecklaeufigeZaehlerMitSchleife(10);
   // ruecklaeufigeZaehler(10);
-  print(fakultaet(3));
+  // print(fakultaet(4));
   // timer(10);
   // print(listGeneratorRekursive(1, 10));
   // zaelerRukersive(1, 10);
-  // print(faktoren(1024));
+  print(faktoren(14));
+}
+
+ruecklaeufigeZaehlerMitSchleife(int number) {
+  for (int i = number; i >= 0; i--) {
+    print(i);
+  }
 }
 
 ruecklaeufigeZaehler(int number) {
-  if (number == 0) return;
   print(number);
+  if (number == 0) return;
   return ruecklaeufigeZaehler(number - 1);
 }
 
