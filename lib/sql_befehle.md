@@ -20,6 +20,7 @@ Erstellt die Tabelle Teilnehmer mit Feldern für **ID**, **Name**, **Geburtsdatu
 | INT          | VARCHAR(50) | VARCHAR(50) | DATE         | VARCHAR(100) (UNIQUE)         | TIMESTAMP (DEFAULT CURRENT_TIMESTAMP) |
 
 ---
+---
 
 ## **Relationen Bauen**
 
@@ -53,6 +54,7 @@ Fügt der Adresse-Tabelle eine **neue Spalte** Hausnummer hinzu, die einen Wert 
 |------|---------|---------|-----------|--------------|-------------|
 | INT  | VARCHAR(100) | VARCHAR(10) | VARCHAR(150) | INT          | VARCHAR(10) |
 
+---
 ---
 
 ## **Add Teilnehmer**
@@ -88,6 +90,8 @@ Fügt zehn neue Teilnehmer mit Vornamen, Nachnamen, Geburtsdaten und E-Mail-Adre
 | 10           | Laura        | Bauer       | 1996-06-08   | <laura.bauer@example.com>        | (automatisch gesetzt)     |
 
 ---
+---
+
 
 ## **Add Adresse**
 
@@ -122,6 +126,8 @@ Fügt zehn neue Adressen mit Stadt, Vorwahl, Straße, Hausnummer und der Teilneh
 | 10   | Bremen   | 0421    | Weserstraße    | 7          | 10           |
 
 ---
+---
+
 
 ## Select all
 
@@ -144,6 +150,7 @@ Gibt **alle** Spalten und Zeilen aus der Teilnehmer-Tabelle zurück
 | 9            | David   | Koch     | 1993-12-20   | <david.koch@example.com>         | (automatisch gesetzt)     |
 | 10           | Laura   | Bauer    | 1996-06-08   | <laura.bauer@example.com>        | (automatisch gesetzt)     |
 
+---
 ---
 
 ## **Select bestimmte Spalten**
@@ -206,6 +213,7 @@ Gibt die TeilnehmerID und Straße-Spalten aus der Adresse-Tabelle zurück.
 | 10           | Weserstraße    |
 
 ---
+---
 
 ## Select Distinct
 
@@ -221,6 +229,7 @@ Gibt die **einzigartigen** Werte (keine Duplikate) der Stadt-Spalte aus der Adre
 | Frankfurt  |
 | Bremen     |
 
+---
 ---
 
 ## **Select where (select mit Voraussetzungen)**
@@ -270,6 +279,7 @@ Gibt die Straße, Hausnummer und Vorwahl der Teilnehmer aus der Adresse-Tabelle 
 | Friedrichstraße| 3          | 0711    |
 
 ---
+---
 
 ## **Neue teinehmer Einfügen**
 
@@ -292,6 +302,7 @@ VALUES ('Michael', 'Weber', '1998-12-05', 'michael.weber@example.com');
 | 10          | Laura    | Bauer     | 1996-06-08   | <laura.bauer@example.com>    |
 | 11          | Michael  | Weber     | 1998-12-05   | <michael.weber@example.com>  |
 
+---
 ---
 
 ## **INNER JOIN**
@@ -317,6 +328,7 @@ Gibt die Vornamen, Nachnamen und Straßennamen aller Teilnehmer zurück, die ein
 | David    | Koch       | Altstadtstraße |
 | Laura    | Bauer      | Weserstraße    |
 
+---
 ---
 
 ## **LEFT JOIN**
@@ -346,6 +358,7 @@ Gibt die Vornamen, Nachnamen und Straßennamen aller Teilnehmer zurück. **Teiln
 ### **Wichtiger Hinweis**: Beim INNER JOIN werden nur die Teilnehmer angezeigt, die eine Adresse in der Adress-Tabelle haben. Beim LEFT JOIN hingegen werden alle Teilnehmer angezeigt, unabhängig davon, ob sie eine Adresse haben oder nicht
 
 ---
+---
 
 ## **Alias**
 
@@ -371,6 +384,7 @@ Dieser SQL-Befehl gibt die Vornamen der Teilnehmer aus der Teilnehmer-Tabelle zu
 | Michael             |
 
 ---
+---
 
 ## **add noten zur Teilnehmern Tabelle**
 
@@ -381,6 +395,7 @@ ADD COLUMN Note INT CHECK (Note >= 0 AND Note <= 100);
 
 Dieser SQL-Befehl fügt eine neue Spalte namens Note zur Teilnehmer-Tabelle hinzu. Die Note-Spalte ist vom Datentyp INT und akzeptiert nur Werte im Bereich von 0 bis 100.
 
+---
 ---
 
 ## **Add Noten jeweils Teilnehmer**
@@ -420,6 +435,7 @@ Dieser SQL-Befehl aktualisiert die Note-Spalte für jeden Teilnehmer basierend a
 | 10           | Michael    | Weber     | 1998-12-05   | <michael.bauer@example.com>       | 2021-10-01          | 48   |
 
 ---
+---
 
 ## **Group by**
 
@@ -456,6 +472,7 @@ Dieser SQL-Befehl zählt die Anzahl der bestandenen Teilnehmer (Note ≥ 50) pro
 | Frankfurt | 2                            |
 | Bremen    | 2                            |
 
+---
 ---
 
 ## **Order By**
@@ -504,6 +521,7 @@ Dieser SQL-Befehl gibt die Vorname, Nachname und Note der Teilnehmer aus, sortie
 | Laura   | Bauer    | 58   |
 
 ---
+---
 
 ## **Funktionen**
 
@@ -518,6 +536,8 @@ Dieser SQL-Befehl berechnet den **Durchschnitt** der Noten aller Teilnehmer.
 |-------------------|
 | 58             |
 
+---
+
 ```sql
 SELECT COUNT(TeilnehmerID) AS Anzahl_Teilnehmer
 FROM Teilnehmer ;
@@ -528,6 +548,8 @@ Dieser SQL-Befehl zählt die **Anzahl** der Teilnehmer in der Teilnehmer-Tabelle
 | Anzahl_Teilnehmer |
 |-------------------|
 | 11                |
+
+---
 
 ```sql
 SELECT SUM(Note) AS Gesamtnote
@@ -540,6 +562,8 @@ Dieser SQL-Befehl berechnet die **Summe** aller Noten der Teilnehmer in der Teil
 |------------|
 | 638        |
 
+---
+
 ```sql
 SELECT MAX(Note) AS HöchsteNote
 FROM Teilnehmer ;
@@ -550,6 +574,8 @@ Dieser SQL-Befehl gibt die **höchste** Note der Teilnehmer in der Teilnehmer-Ta
 | HöchsteNote |
 |-------------|
 | 92          |
+
+---
 
 ```sql
 SELECT MIN(Note) AS **NiedrigsteNote**
@@ -562,6 +588,8 @@ Dieser SQL-Befehl gibt die niedrigste Note der Teilnehmer in der Teilnehmer-Tabe
 |----------------|
 | 20             |
 
+---
+
 ```sql
 SELECT 
     (SELECT Note FROM Teilnehmer ORDER BY TeilnehmerID ASC LIMIT 1) AS ErsteNote,
@@ -573,6 +601,8 @@ Dieser SQL-Befehl gibt die **erste** und die **letzte** Note aus der Teilnehmer-
 | ErsteNote | LetzteNote |
 |-----------|------------|
 | 85        | 48         |
+
+---
 
 ```sql
 SELECT DATE(Registrierungsdatum) AS Registrierungsdatum_ohne_Zeit
@@ -593,6 +623,8 @@ Dieser SQL-Befehl gibt das Registrierungsdatum der Teilnehmer ohne die Zeitangab
 | 2020-04-05                    |
 | 2021-12-20                    |
 | 2021-06-08                    |
+
+---
 
 ```sql
 SELECT DAY(Geburtsdatum) AS Tag
@@ -615,6 +647,8 @@ Der Befehl extrahiert den **Tag** des Geburtsdatums jedes Teilnehmers und gibt i
 | 08   |
 | 05   |
 
+---
+
 ```sql
 SELECT MONTH(Geburtsdatum) AS Monat
 FROM Teilnehmer ;
@@ -635,6 +669,8 @@ es extrahiert den **Monat** des Geburtsdatums jedes Teilnehmers und gibt ihn in 
 | 12    |
 | 6     |
 | 12    |
+
+---
 
 ```sql
 SELECT YEAR(Geburtsdatum) AS Jahr
@@ -657,6 +693,8 @@ es extrahiert den **Jahr** des Geburtsdatums jedes Teilnehmers und gibt ihn in e
 | 1996 |
 | 1998 |
 
+---
+
 ```sql
 SELECT CURDATE() AS Heute;
 ```
@@ -666,6 +704,8 @@ gibt das **aktuelle Datum** zurück
 | Heute      |
 |------------|
 | 2025-02-12 |
+
+---
 
 ```sql
 SELECT WEEKDAY(Geburtsdatum) AS Wochentag
@@ -687,6 +727,8 @@ es gibt den Wochentag (als Zahl) für jedes Geburtsdatum der Teilnehmer zurück,
 | 0         |
 | 2         |
 | 6         |
+
+---
 
 ```sql
 SELECT DAYNAME(Geburtsdatum) AS Wochentag_Name
@@ -710,6 +752,7 @@ FROM Teilnehmer ;
 | Saturday       |
 
 ---
+---
 
 ## **Operatoren**
 
@@ -728,6 +771,8 @@ gibt die Vornamen und Nachnamen der Teilnehmer zurück, deren Geburtsdatum nach 
 | Felix   | Hoffmann  |
 | David   | Koch      |
 
+---
+
 ```sql
 SELECT t.Vorname, t.Nachname
 FROM Teilnehmer AS t
@@ -745,6 +790,8 @@ Diese Abfrage gibt alle Teilnehmer Vor und Nachnamen mit einer Note unter 50 ode
 | Paul     | Wagner    |
 | Julia    | Becker    |
 | Laura    | Bauer     |
+
+---
 
 ```sql
 SELECT t.Vorname, t.Nachname
@@ -766,6 +813,8 @@ Dieser SQL-Befehl gibt die Vornamen und Nachnamen der Teilnehmer zurück, deren 
 | David    | Koch       |
 | Laura    | Bauer      |
 
+---
+
 ```sql
 SELECT t.Vorname, t.Nachname
 FROM Teilnehmer AS t
@@ -782,6 +831,7 @@ Es zeigt die Teilnehmer, die entweder eine Note von 50 oder mehr in Berlin haben
 | Julia    | Becker    |
 
 ---
+---
 
 ## **Like**
 
@@ -797,6 +847,8 @@ Es sucht alle Teilnehmer, deren Vorname mit dem Buchstaben "A" **beginnt**.
 |---------|-----------|
 | Anna    | Schmidt   |
 
+---
+
 ```sql
 SELECT Vorname, Nachname
 FROM Teilnehmer
@@ -807,6 +859,8 @@ Es sucht nach Teilnehmern, deren Vorname mit dem Buchstaben "A" **beginnt** und 
 
 | Vorname | Nachname  |
 |---------|-----------|
+
+---
 
 ```sql
 SELECT Vorname, Nachname
@@ -828,6 +882,8 @@ sucht nach Vornamen, die den Buchstaben "a" an **beliebiger** Stelle enthalten.
 | Laura    | Bauer     |
 | Michael  | Weber     |
 
+---
+
 ```sql
 SELECT Vorname, Nachname
 FROM Teilnehmer
@@ -844,6 +900,7 @@ sucht nach Vornamen, bei denen der **zweite Buchstabe** ein "a" ist.
 | David    | Koch      |
 | Laura    | Bauer     |
 
+---
 ---
 
 ## **Tabelle Löschen**
@@ -863,4 +920,7 @@ CREATE TABLE Adresse (
     TeilnehmerID INT,
     FOREIGN KEY (TeilnehmerID) REFERENCES Teilnehmer(TeilnehmerID) ON DELETE CASCADE
 );
-````
+```
+
+---
+---
