@@ -1,4 +1,5 @@
-import 'package:advanced_dart_tutorial/generics/main2.dart';
+
+import 'generics/main2.dart';
 
 void main() {
   List<Raum> raeume = [

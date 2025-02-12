@@ -1,5 +1,57 @@
+
+
+
+
+/*
+
+Aufgabe:
+Schreiben Sie eine Funktion, die die nächste Abfahrtszeit eines Zuges berechnet.
+ Die Funktion erhält zwei Parameter: die aktuelle Stunde und die aktuelle Minute. 
+ Die Funktion gibt die nächste Abfahrtszeit als String zurück. 
+ Die Abfahrtszeiten sind in einer Tabelle gespeichert. 
+ Hinweis: benutzen Sie Rekursion.
+
+0:
+1:
+2:
+3:
+4:
+5:
+6: 30
+7: 20, 50
+8: 10, 30, 50
+9: 20, 50
+10: 20, 50
+11: 20, 50
+12: 20, 50
+13: 10, 30, 50
+14: 20, 50
+15: 20, 50
+16: 20, 50
+17: 10, 30, 50
+18: 20, 50
+19: 30
+20: 30
+21:
+22:
+23:
+
+
+
+
+
+*/ 
+
+
+
+
+
+
+
+
+
 void main() {
-  print(naechsteFahrtZaehler(8, 46));
+  print(naechsteFahrtZaehler(8, 46));//8:50
 }
 
 String naechsteFahrtZaehler(int stunde, int aktuelleMinute) {
