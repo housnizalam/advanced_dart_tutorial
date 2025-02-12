@@ -274,8 +274,8 @@ Gibt die Straße, Hausnummer und Vorwahl der Teilnehmer aus der Adresse-Tabelle 
 ## **Neue teinehmer Einfügen**
 
 ```sql
-INSERT INTO Teilnehmer (Vorname, Nachname, Geburtsdatum, Email, Noten)
-VALUES ('Michael', 'Weber', '1998-12-05', 'michael.weber@example.com', 75);
+INSERT INTO Teilnehmer (Vorname, Nachname, Geburtsdatum, Email)
+VALUES ('Michael', 'Weber', '1998-12-05', 'michael.weber@example.com');
 ```
 
 | TeilnehmerID | Vorname  | Nachname  | Geburtsdatum | Email                      |
@@ -491,17 +491,17 @@ Dieser SQL-Befehl gibt die Vorname, Nachname und Note der Teilnehmer aus, sortie
 
 | Vorname | Nachname | Note |
 |---------|----------|------|
-| Sarah   | Schulz   | 78   |
-| Paul    | Wagner   | 85   |
 | Michael | Weber    | 48   |
+| Paul    | Wagner   | 85   |
+| Sarah   | Schulz   | 78   |
+| Anna    | Schmidt  | 40   |
 | Max     | Mustermann | 85 |
-| Lisa    | Fischer  | 92   |
-| Laura   | Bauer    | 58   |
-| Julia   | Becker   | 20   |
-| Felix   | Hoffmann | 62   |
 | Tom     | Müller   | 40   |
 | David   | Koch     | 48   |
-| Anna    | Schmidt  | 40   |
+| Felix   | Hoffmann | 62   |
+| Lisa    | Fischer  | 92   |
+| Julia   | Becker   | 20   |
+| Laura   | Bauer    | 58   |
 
 ---
 
@@ -516,7 +516,7 @@ Dieser SQL-Befehl berechnet den **Durchschnitt** der Noten aller Teilnehmer.
 
 | Durchschnittsnote |
 |-------------------|
-| 54.36             |
+| 58             |
 
 ```sql
 SELECT COUNT(TeilnehmerID) AS Anzahl_Teilnehmer
@@ -538,7 +538,7 @@ Dieser SQL-Befehl berechnet die **Summe** aller Noten der Teilnehmer in der Teil
 
 | Gesamtnote |
 |------------|
-| 668        |
+| 638        |
 
 ```sql
 SELECT MAX(Note) AS HöchsteNote
@@ -744,7 +744,6 @@ Diese Abfrage gibt alle Teilnehmer Vor und Nachnamen mit einer Note unter 50 ode
 | Paul     | Wagner    |
 | Julia    | Becker    |
 | Laura    | Bauer     |
-| Michael  | Weber     |
 
 ```sql
 SELECT t.Vorname, t.Nachname
@@ -758,8 +757,8 @@ Dieser SQL-Befehl gibt die Vornamen und Nachnamen der Teilnehmer zurück, deren 
 | Vorname  | Nachname   |
 |----------|------------|
 | Max      | Mustermann |
+| Anna      | Schmidt |
 | Tom      | Müller     |
-| Paul     | Wagner     |
 | Julia    | Becker     |
 | Felix    | Hoffmann   |
 | Sarah    | Schulz     |
@@ -820,7 +819,11 @@ sucht nach Vornamen, die den Buchstaben "a" an **beliebiger** Stelle enthalten.
 |----------|-----------|
 | Max      | Mustermann|
 | Anna     | Schmidt   |
+| Lisa     | Fischer   |
+| Paul     | Wagner    |
+| Julia    | Becker    |
 | Sarah    | Schulz    |
+| David    | Koch      |
 | Laura    | Bauer     |
 | Michael  | Weber     |
 
@@ -835,7 +838,10 @@ sucht nach Vornamen, bei denen der **zweite Buchstabe** ein "a" ist.
 | Vorname | Nachname  |
 |---------|-----------|
 | Max     | Mustermann|
+| Paul     | Wagner    |
 | Sarah   | Schulz    |
+| David    | Koch      |
+| Laura    | Bauer     |
 
 ---
 
