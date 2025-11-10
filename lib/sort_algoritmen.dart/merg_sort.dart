@@ -3,7 +3,7 @@ void main() {
   final List<int> fastSortierendeList = [3, 2, 1, 4, 5, 6, 7];
   final List<int> sortierendeList = [1, 2, 3, 4, 5, 6, 7];
 
-  final list = unsortierendeList;
+  final list = unsortierendeList;  
   print("Unsorted list: $list");
   mergeSort(list);
   print("Sorted list: $list");

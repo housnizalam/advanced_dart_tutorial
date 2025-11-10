@@ -45,17 +45,48 @@ Erstellt die Tabelle Adresse mit Feldern für **ID**, **Stadt**, **Vorwahl**, **
 
 ```sql
 ALTER TABLE Adresse
-ADD COLUMN Hausnummer VARCHAR(10) NOT NULL;
+ADD COLUMN Hausnummer INT NOT NULL,
+ADD COLUMN Etage INT NOT NULL;
 ```
 
 Fügt der Adresse-Tabelle eine **neue Spalte** Hausnummer hinzu, die einen Wert vom Typ VARCHAR(10) erwartet und nicht leer sein darf.
 
-| id   | Stadt   | Vorwahl | Straße    | TeilnehmerID | Hausnummer  |
-|------|---------|---------|-----------|--------------|-------------|
-| INT  | VARCHAR(100) | VARCHAR(10) | VARCHAR(150) | INT          | VARCHAR(10) |
+| id  | Stadt         | Vorwahl     | Straße        | TeilnehmerID | Hausnummer | Etage |
+|-----|---------------|-------------|---------------|--------------|------------|-------|
+| INT | VARCHAR(100)  | VARCHAR(10) | VARCHAR(150)  | INT          | INT        | INT   |
+
 
 ---
 ---
+
+## **Eine Spalte löschen**
+
+```sql
+ALTER TABLE Adresse
+DROP COLUMN Etage;
+```
+
+| id  | Stadt         | Vorwahl     | Straße        | TeilnehmerID | Hausnummer |
+|-----|---------------|-------------|---------------|--------------|------------|
+| INT | VARCHAR(100)  | VARCHAR(10) | VARCHAR(150)  | INT          | INT        |
+
+---
+---
+
+## **Eine Spalte modifizieren**
+
+```sql
+ALTER TABLE Adresse
+MODIFY COLUMN Hausnummer VARCHAR(50) NOT NULL;
+```
+
+| id  | Stadt         | Vorwahl     | Straße        | TeilnehmerID | Hausnummer      |
+|-----|---------------|-------------|---------------|--------------|------------------|
+| INT | VARCHAR(100)  | VARCHAR(10) | VARCHAR(150)  | INT          | VARCHAR(50)     |
+
+---
+---
+
 
 ## **Add Teilnehmer**
 
@@ -281,6 +312,71 @@ Gibt die Straße, Hausnummer und Vorwahl der Teilnehmer aus der Adresse-Tabelle 
 ---
 ---
 
+## **Select where mit WHERE EXIST**
+
+```sql
+SELECT t.*
+FROM Teilnehmer t
+WHERE EXISTS (
+    SELECT 1
+    FROM Adresse a
+    WHERE a.Stadt = 'Berlin'
+);
+```
+
+WHERE EXISTS ist eine boolean Syntax, anzeigt die alle Zeilen, wenn einer Zeile die Voraussetzung nach WHERE erfüllt, sonst anzeigt nichts.
+
+| TeilnehmerID | Vorname      | Nachname    | Geburtsdatum | Email                          | Registrierungsdatum       |
+|--------------|--------------|-------------|--------------|--------------------------------|---------------------------|
+| 1            | Max          | Mustermann  | 1990-05-15   | <max.mustermann@example.com>     | (automatisch gesetzt)     |
+| 2            | Anna         | Schmidt     | 1985-08-22   | <anna.schmidt@example.com>       | (automatisch gesetzt)     |
+| 3            | Tom          | Müller      | 1995-03-10   | <tom.mueller@example.com>        | (automatisch gesetzt)     |
+| 4            | Lisa         | Fischer     | 1992-07-30   | <lisa.fischer@example.com>       | (automatisch gesetzt)     |
+| 5            | Paul         | Wagner      | 1988-11-12   | <paul.wagner@example.com>        | (automatisch gesetzt)     |
+| 6            | Julia        | Becker      | 1994-02-25   | <julia.becker@example.com>       | (automatisch gesetzt)     |
+| 7            | Felix        | Hoffmann    | 1991-09-18   | <felix.hoffmann@example.com>     | (automatisch gesetzt)     |
+| 8            | Sarah        | Schulz      | 1987-04-05   | <sarah.schulz@example.com>       | (automatisch gesetzt)     |
+| 9            | David        | Koch        | 1993-12-20   | <david.koch@example.com>         | (automatisch gesetzt)     |
+| 10           | Laura        | Bauer       | 1996-06-08   | <laura.bauer@example.com>        | (automatisch gesetzt)     |
+
+
+hinweis : WHERE NOT EXIST funktioniert genau umgekehrt
+
+---
+---
+
+## **Select where mit IN**
+
+```sql
+SELECT *
+FROM Teilnehmer
+WHERE TeilnehmerID IN (
+    SELECT TeilnehmerID
+    FROM Adresse
+    WHERE Stadt = 'Berlin'
+);
+
+```
+
+WHERE IN ist eine boolean Syntax, anzeigt nur die Zeilen, die die Voraussetzung nach WHERE erfüllt.
+
+
+
+| TeilnehmerID | Vorname | Nachname   | Geburtsdatum |
+|--------------|---------|-------------|--------------|
+| 1            | Max     | Mustermann  | 1990-05-15   |
+| 4            | Anna    | Schmidt     | 1992-07-30   |
+| 8            | Tom   | Müller      | 1987-04-05   |
+
+Hinwes: WHERE NOT IN funktioniert genau wie WHERE IN aber umgekehrt.
+
+---
+---
+
+
+
+
+
 ## **Neue teinehmer Einfügen**
 
 ```sql
@@ -440,7 +536,7 @@ Dieser SQL-Befehl aktualisiert die Note-Spalte für jeden Teilnehmer basierend a
 ## **Group by**
 
 ```sql
-SELECT Stadt, COUNT(*) AS Anzahl_Teilnehmer
+SELECT Stadt, COUNT(TeilnehmerID) AS Anzahl_Teilnehmer
 FROM Adresse
 GROUP BY Stadt;
 ```
@@ -472,8 +568,29 @@ Dieser SQL-Befehl zählt die Anzahl der bestandenen Teilnehmer (Note ≥ 50) pro
 | Frankfurt | 2                            |
 | Bremen    | 2                            |
 
+Hinweis:
+die alle Spalte, die nach Select anzeigt, muss nach Group BY Befehl geschrieben   
 ---
 ---
+
+## **Group by With having**
+
+```sql
+SELECT a.Stadt, COUNT(t.TeilnehmerID) AS Anzahl_Bestandene_Teilnehmer
+FROM Teilnehmer AS t
+INNER JOIN Adresse AS a ON t.TeilnehmerID = a.TeilnehmerID
+WHERE t.Note >= 50
+GROUP BY a.Stadt;
+HAVING COUNT(t.TeilnehmerID) > 2;
+```
+hier wird nur die städte angezeigt, die mehr als 2 passende Teilnehmer hat 
+
+---
+---
+
+| Stadt     | Anzahl_Bestandene_Teilnehmer |
+|-----------|------------------------------|
+
 
 ## **Order By**
 
@@ -522,6 +639,27 @@ Dieser SQL-Befehl gibt die Vorname, Nachname und Note der Teilnehmer aus, sortie
 
 ---
 ---
+
+## **ORDER BY eith LIMIT**
+
+```sql
+SELECT t.Vorname, t.Nachname, t.Note
+FROM Teilnehmer AS t
+ORDER BY t.Note ASC;
+LIMIT 3
+```
+
+es ergibt nut die erste 3 ergebnisse, bzw die schlimmste 3 Noten.
+
+| Vorname | Nachname | Note |
+|---------|----------|------|
+| Julia   | Becker   | 20   |
+| Tom     | Müller   | 40   |
+| David   | Koch     | 48   |
+
+---
+---
+
 
 ## **Funktionen**
 
@@ -590,19 +728,6 @@ Dieser SQL-Befehl gibt die niedrigste Note der Teilnehmer in der Teilnehmer-Tabe
 
 ---
 
-```sql
-SELECT 
-    (SELECT Note FROM Teilnehmer ORDER BY TeilnehmerID ASC LIMIT 1) AS ErsteNote,
-    (SELECT Note FROM Teilnehmer ORDER BY TeilnehmerID DESC LIMIT 1) AS LetzteNote;
-```
-
-Dieser SQL-Befehl gibt die **erste** und die **letzte** Note aus der Teilnehmer-Tabelle zurück.
-
-| ErsteNote | LetzteNote |
-|-----------|------------|
-| 85        | 48         |
-
----
 
 ```sql
 SELECT DATE(Registrierungsdatum) AS Registrierungsdatum_ohne_Zeit
@@ -703,7 +828,18 @@ gibt das **aktuelle Datum** zurück
 
 | Heute      |
 |------------|
-| 2025-02-12 |
+| 2025-11-06 |
+
+---
+```sql
+SELECT NOW() AS Heute;
+```
+
+gibt das **aktuelle Datum mit Uhrzeit** zurück
+
+| Heute      |
+|------------|
+| 2025-11-06 14:37:58 |
 
 ---
 
@@ -752,6 +888,29 @@ FROM Teilnehmer ;
 | Saturday       |
 
 ---
+
+```sql
+SELECT Datediff(year,Geburtsdatum, Now()) AS Alter_Jahren from Teilnehmer ;
+```
+
+es ergibt den Unterschied zwischen zwei Datums je nach die gegebene Date_Element (Jahr, Monat, Tag)
+Datediff(Date_Element,Startdate, Enddate)
+
+| Alter_Jahren |
+|----------------|
+| 20         |
+| 22        |
+| 34         |
+| 34         |
+| 34      |
+| 33         |
+| 41       |
+| 17         |
+| 20         |
+| 19      |
+| 28       |
+
+---
 ---
 
 ## **Operatoren**
@@ -797,7 +956,7 @@ Diese Abfrage gibt alle Teilnehmer Vor und Nachnamen mit einer Note unter 50 ode
 SELECT t.Vorname, t.Nachname
 FROM Teilnehmer AS t
 INNER JOIN Adresse AS a ON t.TeilnehmerID = a.TeilnehmerID
-WHERE a.Stadt != 'Frankfurt';
+WHERE a.Stadt <> 'Frankfurt';
 ```
 
 Dieser SQL-Befehl gibt die Vornamen und Nachnamen der Teilnehmer zurück, deren Stadt nicht 'Frankfurt' ist
@@ -833,7 +992,7 @@ Es zeigt die Teilnehmer, die entweder eine Note von 50 oder mehr in Berlin haben
 ---
 ---
 
-## **Like**
+## **String Funktionen**
 
 ```sql
 SELECT Vorname, Nachname
@@ -901,6 +1060,34 @@ sucht nach Vornamen, bei denen der **zweite Buchstabe** ein "a" ist.
 | Laura    | Bauer     |
 
 ---
+
+```sql
+SELECT Vorname, Nachname
+FROM Teilnehmer
+WHERE left(Vorname,2)='an';
+```
+
+erste zwe Buchstaben sollen an sein
+
+| Vorname  | Nachname  |
+|----------|-----------|
+| Anna     | Schmidt   |
+
+---
+
+```sql
+SELECT Vorname, Nachname
+FROM Teilnehmer
+WHERE right(Vorname,3)='aul';
+```
+letzte drei Buchstaben sollen aul sein
+
+| Vorname  | Nachname  |
+|----------|-----------|
+| Paul     | Wagner    |
+
+
+---
 ---
 
 ## **Tabelle Löschen**
@@ -908,19 +1095,51 @@ sucht nach Vornamen, bei denen der **zweite Buchstabe** ein "a" ist.
 ```sql
 DROP TABLE Teilnehmer;
 ```
+---
+---
 
-Wenn wir die Tabelle **Teilnehmer** löschen, wird die Tabelle **Adresse** auch **automatisch** **gelöscht**, weil die Relation zwischen den beiden eine **Komposition** ist. Falls wir die Relation jedoch als **Aggregation** gestalten möchten, sollte die Erstellung der Tabelle Adresse wie folgt aussehen:
+## **User und Berechtigungen**
+
 
 ```sql
-CREATE TABLE Adresse (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    Stadt VARCHAR(100) NOT NULL,
-    Vorwahl VARCHAR(10) NOT NULL,
-    Straße VARCHAR(150) NOT NULL,
-    TeilnehmerID INT,
-    FOREIGN KEY (TeilnehmerID) REFERENCES Teilnehmer(TeilnehmerID) ON DELETE CASCADE
-);
+CREATE USER Timo IDENTIFIED BY '12345';
 ```
+Der User Timo wird erstellt mit eine Passwort :'12345'
+
+---
+
+```sql
+GRANT SELECT on Teilnehmer TO Timo;
+```
+Timo hat lesen Recht für die Tabelle Teilnehmer erhalten.
+
+---
+
+```sql
+Revoke SELECT on Teilnehmer FROM Timo;
+```
+das Lesen Recht wird von timo enzogen 
+
+---
+
+```sql
+CREATE ROLE schreib_recht IDENTIFIED BY '12345ggg';
+GRant UPDATE,INSERT,DELETE on Teilnehmer TO schreib_recht ;
+```
+Die Rolle Variable schreib_recht wird erstellt
+Die UPDATE,INSERT,DELETE Rechte von Tabelle Teilnehmer werden in dem Variable schreib_recht gespeischert
+
+---
+
+```sql
+GRANT schreib_recht TO Timo;
+```
+Die alle Rechte, die in Variable schreib_recht gespeichert sind 
+
+```sql
+REVOKE DELETE,UPDATE FROM schreib_recht;
+```
+Die DELETE,UPDATE Rechte werden von schreib_recht ausgezogen bzw von Timo
 
 ---
 ---
